@@ -1,0 +1,1451 @@
+[
+    {
+        "id": "2cc9995906bb5b8b",
+        "type": "http request",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://data.sensor.community/airrohr/v1/sensor/48108/",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 250,
+        "y": 360,
+        "wires": [
+            [
+                "fbc242cc32f78b85"
+            ]
+        ]
+    },
+    {
+        "id": "4fa7cdccb85e0eed",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "start",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 620,
+        "wires": [
+            [
+                "2cc9995906bb5b8b",
+                "70280138feaa29a4"
+            ]
+        ]
+    },
+    {
+        "id": "1fe913586413e716",
+        "type": "debug",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1P2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "563cd58cb1d4c57c",
+        "type": "ui_chart",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 24,
+        "width": 8,
+        "height": 7,
+        "label": "chart P2",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "185",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 380,
+        "wires": [
+            []
+        ],
+        "inputLabels": [
+            "P2"
+        ]
+    },
+    {
+        "id": "fbc242cc32f78b85",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1/P2",
+        "func": "let payloadLength = { payload: msg.payload.length };\n\nlet obj = {};\nfor (var i = 0; i < payloadLength.payload; i++) {\n    let sensordatavalue = msg.payload[i]?.sensordatavalues;\n    obj = { ...obj, [`${sensordatavalue[i].value_type}`]: sensordatavalue[i].value};\n\n\n}\nreturn { obj }",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 280,
+        "wires": [
+            [
+                "1fe913586413e716",
+                "58536cc8dcf660de",
+                "889d8ddcfe62c9c2",
+                "3c28b6499053ceb7"
+            ]
+        ]
+    },
+    {
+        "id": "58536cc8dcf660de",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1",
+        "func": "\nmsg.payload = msg.obj['P1'];\nmsg.topic = 'P1';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 320,
+        "wires": [
+            [
+                "62e80e137a430860"
+            ]
+        ]
+    },
+    {
+        "id": "889d8ddcfe62c9c2",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P2",
+        "func": "\nmsg.payload = msg.obj['P2'];\nconsole.log('P2');\nconsole.log(msg.obj['P2']);\nmsg.topic = 'P2';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 380,
+        "wires": [
+            [
+                "563cd58cb1d4c57c"
+            ]
+        ]
+    },
+    {
+        "id": "70280138feaa29a4",
+        "type": "http request",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://data.sensor.community/airrohr/v1/sensor/48109/",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 250,
+        "y": 940,
+        "wires": [
+            [
+                "73fe3c2cf7b3c6bf"
+            ]
+        ]
+    },
+    {
+        "id": "b7edd7631e22a879",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "TEMP",
+        "func": "\nmsg.payload = msg.obj1['temperature'];\nmsg.topic = 'temperature';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 780,
+        "wires": [
+            [
+                "77af0a9fa926a349"
+            ]
+        ]
+    },
+    {
+        "id": "2b479c710c95f23b",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "PRES",
+        "func": "\nmsg.payload = msg.obj1['pressure'];\nmsg.topic = 'pressure';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 860,
+        "wires": [
+            [
+                "e74b841a77e3a66c"
+            ]
+        ]
+    },
+    {
+        "id": "9e0db19f5e9d020a",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "HUM",
+        "func": "\nmsg.payload = msg.obj1['humidity'];\nmsg.topic = 'humidity';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 940,
+        "wires": [
+            [
+                "92410934cc8d22f6"
+            ]
+        ]
+    },
+    {
+        "id": "77af0a9fa926a349",
+        "type": "ui_chart",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 32,
+        "width": 8,
+        "height": 7,
+        "label": "chart Temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-5",
+        "ymax": "30",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 930,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e74b841a77e3a66c",
+        "type": "ui_chart",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 34,
+        "width": 8,
+        "height": 7,
+        "label": "chart Pressure",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "500000",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 920,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "92410934cc8d22f6",
+        "type": "ui_chart",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 42,
+        "width": 17,
+        "height": 6,
+        "label": "chart Humidity",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 920,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "73fe3c2cf7b3c6bf",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "TEMP/PRES/HUM",
+        "func": "let payloadLength = { payload: msg.payload.length };\n\nif (!msg.payload) {\n    return;\n}\n\nlet obj1 = {};\nfor(var k = 0; k < payloadLength.payload; k++) {\n    for (var i = 0; i < 3; i++) {\n    \n        let sensordatavalue = msg.payload[i]?.sensordatavalues;\n        for (let j = 0; j < sensordatavalue?.length; j++) {\n            obj1 = { ...obj1, [`${sensordatavalue[j].value_type}`]: sensordatavalue[j].value};\n        }\n    }\n}\n\nreturn { obj1 }",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 940,
+        "wires": [
+            [
+                "b7edd7631e22a879",
+                "2b479c710c95f23b",
+                "9e0db19f5e9d020a",
+                "114daeb4f460a88a"
+            ]
+        ]
+    },
+    {
+        "id": "cd0d06a25d922366",
+        "type": "sqlite",
+        "z": "fa98f6cf50d8bd70",
+        "mydb": "f630d7d924bbffbd",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "database",
+        "x": 2040,
+        "y": 720,
+        "wires": [
+            [
+                "74315a86e969a80a",
+                "07b99e18df84dd55",
+                "6149c067e2488d2f"
+            ]
+        ]
+    },
+    {
+        "id": "9a8ab671c1706775",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "CREATE P1P2 DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "CREATE TABLE P1P2TABLE( P1 FLOAT, P2 FLOAT)",
+        "payload": "",
+        "payloadType": "date",
+        "x": 830,
+        "y": 600,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "74315a86e969a80a",
+        "type": "debug",
+        "z": "fa98f6cf50d8bd70",
+        "name": "GeneralDebug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2720,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "831f8d4eb3cf04e1",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DELETE P1P2 DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DROP TABLE P1P2TABLE",
+        "payload": "",
+        "payloadType": "date",
+        "x": 830,
+        "y": 680,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "3c28b6499053ceb7",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "INSERTP1P2",
+        "func": "let p1Value = msg.obj['P1'];\nlet p2Value = msg.obj['P2'];\n\nlet newMsg = {\n    \"topic\": \"INSERT INTO P1P2TABLE VALUES ( \"  + p1Value + \", \" + p2Value + \")\"\n}\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 460,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "739b779c8acbf042",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SELECT P1P2 DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM PIP2TABLE",
+        "payload": "",
+        "payloadType": "date",
+        "x": 830,
+        "y": 640,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "114daeb4f460a88a",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "INSERTSEN",
+        "func": "let temperature = msg.obj1['temperature'];\nlet pressure = msg.obj1['pressure'];\nlet humidity = msg.obj1['humidity'];\n\nlet newMsg = {\n   \"topic\": \"INSERT INTO SENSORTABLE VALUES ( \"+ temperature + \",\" + pressure + \",\" + humidity + \")\"\n}\n\n\n\n\nreturn newMsg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 1020,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "ae2bb32ef97f6ea8",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "CREATE SENSORS DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "CREATE TABLE SENSORTABLE(TEMPERATURE FLOAT, PRESSURE FLOAT, HUMIDITY FLOAT)",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 1160,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "7a57ac2bfc02c626",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DELETE SENSORS DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DROP TABLE SENSORTABLE",
+        "payload": "",
+        "payloadType": "date",
+        "x": 700,
+        "y": 1240,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "e060fd400e2e37dd",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SELECT SENSORS DB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM SENSORTABLE",
+        "payload": "",
+        "payloadType": "date",
+        "x": 700,
+        "y": 1200,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "8b6993f7c3f1df40",
+        "type": "debug",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SensorAverageDebug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2200,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "6149c067e2488d2f",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SensorsAverage",
+        "func": "let payloadLength = { payload: msg.payload.length };\nlet remainder = payloadLength.payload % 24;\nconsole.log('Remainder', remainder);\nlet averageTemperature;\nlet averageHumidity;\nlet averagePressure;\nlet sumTemperature = 0;\nlet sumHumidity = 0;\nlet sumPressure = 0;\nlet obj = {};\nif(remainder === 0) {\n    for (let i = 0; i < payloadLength.payload; i++) {\n        sumHumidity = sumHumidity + msg.payload[i].HUMIDITY;\n        sumPressure = sumPressure + msg.payload[i].PRESSURE;\n        sumTemperature = sumTemperature + msg.payload[i].TEMPERATURE;\n    }\n    averageHumidity = sumHumidity / payloadLength.payload;\n    averagePressure = sumPressure / payloadLength.payload;\n    averageTemperature = sumTemperature / payloadLength.payload\n   \n   obj.averageTemperature = averageTemperature;\n   obj.averagePressure = averagePressure;\n   obj.averageHumidity = averageHumidity;\n\n    return { obj };\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1920,
+        "y": 1360,
+        "wires": [
+            [
+                "8b6993f7c3f1df40",
+                "3a14fdac93d19f05",
+                "eb13128181199593",
+                "795fa307f38c0152",
+                "3a508820592367ce"
+            ]
+        ]
+    },
+    {
+        "id": "07b99e18df84dd55",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1P2Average",
+        "func": "let payloadLength = { payload: msg.payload.length };\nlet remainder = payloadLength.payload % 24;\n\nlet p1Average;\nlet p2Average;\nlet sumP1 = 0;\nlet sumP2 = 0;\nlet obj = {};\nif(remainder === 0) {\n    console.log('Test')\n    for (let i = 0; i < payloadLength.payload; i++) {\n        sumP1 = sumP1 + msg.payload[i].P1;\n        sumP2 = sumP2 + msg.payload[i].P2;\n    }\n    p1Average = sumP1 / payloadLength.payload;\n    p2Average = sumP2 / payloadLength.payload;\n    obj.p1Average = p1Average;\n    obj.p2Average = p2Average;\n    \n}\n\nreturn { obj };",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1940,
+        "y": 360,
+        "wires": [
+            [
+                "fdb5c33478e10bc8",
+                "eb27d55a51570638",
+                "dc74f30c1efbd3ce",
+                "eb91f9fd71243b3e"
+            ]
+        ]
+    },
+    {
+        "id": "fdb5c33478e10bc8",
+        "type": "debug",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1P2AverageDebug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2540,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "3a14fdac93d19f05",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "insertSensorsDB",
+        "func": "let avgTemp = msg.obj['averageTemperature'];\nlet avgHum = msg.obj['averageHumidity'];\nlet avgPres = msg.obj['averagePressure'];\n\n\nif (!avgTemp || !avgHum || !avgPres) {\n    return;\n}\n\n\nlet newMsg = {\n    \"topic\": \"INSERT INTO SENSORAVG VALUES ( \" + avgTemp + \", \" + avgHum + \", \" + avgPres + \")\"\n}\n\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2270,
+        "y": 1240,
+        "wires": [
+            [
+                "ef4e03edfa167569"
+            ]
+        ]
+    },
+    {
+        "id": "eb27d55a51570638",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "insertP1P2DB",
+        "func": "let p1AvgValue = msg.obj['p1Average'];\nlet p2AvgValue = msg.obj['p2Average'];\n\nif (!p1AvgValue || !p2AvgValue) {\n    return;\n}\n\nlet newMsg = {\n    \"topic\": \"INSERT INTO P1P2AVG VALUES ( \" + p1AvgValue + \", \" + p2AvgValue + \")\"\n}\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2220,
+        "y": 440,
+        "wires": [
+            [
+                "ef4e03edfa167569"
+            ]
+        ]
+    },
+    {
+        "id": "fad67f58a4ed3142",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "CREATE P1P2 AVG ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "CREATE TABLE P1P2AVG (P1AVG FLOAT, P2AVG FLOAT)",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1350,
+        "y": 360,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "c6fc414cf5aed7a0",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "CREATE SENSORS AVG",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "CREATE TABLE SENSORAVG(TEMPAVG FLOAT, PRESSAVG FLOAT, HUMIDAVG FLOAT)",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1210,
+        "y": 1240,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "8c8a1b0f0d47e307",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SELECT P1P2 AVG ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM P1P2AVG",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1350,
+        "y": 400,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "529019a4ab11388c",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "SELECT SENSORS AVG",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM SENSORAVG",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1210,
+        "y": 1280,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "30bfba998a56daf9",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DELETE P1P2 AVG ",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DROP TABLE P1P2AVG",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1350,
+        "y": 440,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "c9e828d5c1fe7fd7",
+        "type": "inject",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DELETE SENSORS AVG",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "DROP TABLE SENSORAVG",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1210,
+        "y": 1320,
+        "wires": [
+            [
+                "cd0d06a25d922366"
+            ]
+        ]
+    },
+    {
+        "id": "5c1275063864847f",
+        "type": "ui_gauge",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 1,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "P1 Avg",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "150",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2700,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "42aed36cc227d2e2",
+        "type": "ui_gauge",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 3,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "P2 Avg",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "150",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2700,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "dc74f30c1efbd3ce",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1 Average",
+        "func": "msg.payload = msg.obj['p1Average'];\nmsg.topic = 'p1Average';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2430,
+        "y": 260,
+        "wires": [
+            [
+                "5c1275063864847f"
+            ]
+        ]
+    },
+    {
+        "id": "eb91f9fd71243b3e",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P2 Average",
+        "func": "msg.payload = msg.obj['p2Average'];\nmsg.topic = 'p2Average';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2430,
+        "y": 320,
+        "wires": [
+            [
+                "42aed36cc227d2e2"
+            ]
+        ]
+    },
+    {
+        "id": "463f656ce7f357eb",
+        "type": "ui_gauge",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 8,
+        "width": 5,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Temperature Avg",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2630,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "871e7af97dcb5426",
+        "type": "ui_gauge",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 12,
+        "width": 5,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Pressure Avg",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "10000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2610,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "eb13128181199593",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Humidity Average",
+        "func": "msg.payload = msg.obj['averageHumidity'];\nmsg.topic = 'averageHumidity';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2290,
+        "y": 1300,
+        "wires": [
+            [
+                "a14134fe8f9ad2fb"
+            ]
+        ]
+    },
+    {
+        "id": "795fa307f38c0152",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Temperture Average",
+        "func": "msg.payload = msg.obj['averageTemperature'];\nmsg.topic = 'averageTemperature';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2300,
+        "y": 1360,
+        "wires": [
+            [
+                "463f656ce7f357eb"
+            ]
+        ]
+    },
+    {
+        "id": "3a508820592367ce",
+        "type": "function",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Pressure Average",
+        "func": "msg.payload = msg.obj['averagePressure'];\nmsg.topic = 'averagePressure';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2310,
+        "y": 1420,
+        "wires": [
+            [
+                "871e7af97dcb5426"
+            ]
+        ]
+    },
+    {
+        "id": "62e80e137a430860",
+        "type": "ui_chart",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 22,
+        "width": 8,
+        "height": 7,
+        "label": "chart P1",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "185",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 320,
+        "wires": [
+            []
+        ],
+        "inputLabels": [
+            "P2"
+        ]
+    },
+    {
+        "id": "d7f7b0a8ad715ece",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Request for P1 & P2",
+        "info": "Request for P1 & P2",
+        "x": 230,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "977196b5d432b991",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Request for TEMP & PRES & HUM",
+        "info": "Request for P1 & P2",
+        "x": 180,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "818d58c00280720f",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1 & P2 values",
+        "info": "Request for P1 & P2",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "3c8aaea59ae5dae1",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "TEMP, PRES, HUM values",
+        "info": "Request for P1 & P2",
+        "x": 450,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "e2df488b8fbcdf5b",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "P1 & P2 graphs",
+        "info": "Request for P1 & P2",
+        "x": 1120,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "d4bf383ccc623eb6",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "TEMP, PRES, HUM graphs",
+        "info": "Request for P1 & P2",
+        "x": 1070,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "6c0d588be4a9c3f7",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Create Table for P1 & P2 on database",
+        "info": "Request for P1 & P2",
+        "x": 750,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8b2713dfe7ef0389",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Create Table for TEMP, PRES, HUM on database",
+        "info": "Request for P1 & P2",
+        "x": 720,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "81f6524d6b4269b1",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Create Table for P1 & P2 Average on database",
+        "info": "Request for P1 & P2",
+        "x": 1270,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "e0a6e6dc4fd60440",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Create Table for TEMP, PRES, HUM Average on database",
+        "info": "Request for P1 & P2",
+        "x": 1030,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "81bcaab67e1848f9",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Take the values from database and calculate the average",
+        "info": "Request for P1 & P2",
+        "x": 1790,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "1155be3103dc15bf",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "UI Presentation for TEMP, PRES, HUM",
+        "info": "Request for P1 & P2",
+        "x": 2690,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "652f5c51f096d97b",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Insert the average values on database",
+        "info": "Request for P1 & P2",
+        "x": 2550,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "4ab19c6070c76222",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Take the values from database and calculate the average",
+        "info": "Request for P1 & P2",
+        "x": 1870,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "2ce002044473a70c",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "Insert the average values on database",
+        "info": "Request for P1 & P2",
+        "x": 2170,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "4b8c77f8c814289b",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "UI Presentation for P1 & P2",
+        "info": "Request for P1 & P2",
+        "x": 2480,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "f013916b238a02b9",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DATABASE with 2 tables",
+        "info": "Request for P1 & P2",
+        "x": 2070,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "ef4e03edfa167569",
+        "type": "sqlite",
+        "z": "fa98f6cf50d8bd70",
+        "mydb": "f630d7d924bbffbd",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "databaseAvg",
+        "x": 2470,
+        "y": 640,
+        "wires": [
+            [
+                "74315a86e969a80a"
+            ]
+        ]
+    },
+    {
+        "id": "be413b5ef68bc8f0",
+        "type": "comment",
+        "z": "fa98f6cf50d8bd70",
+        "name": "DATABASE with 2 tables which contains average",
+        "info": "Request for P1 & P2",
+        "x": 2580,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "a14134fe8f9ad2fb",
+        "type": "ui_gauge",
+        "z": "fa98f6cf50d8bd70",
+        "name": "",
+        "group": "d856c5ff2eb86ae7",
+        "order": 10,
+        "width": 5,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Humidity Avg",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "10000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2610,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "d856c5ff2eb86ae7",
+        "type": "ui_group",
+        "name": "Visualization",
+        "tab": "970e8a9cf4ff08b9",
+        "order": 1,
+        "disp": true,
+        "width": 17,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f630d7d924bbffbd",
+        "type": "sqlitedb",
+        "db": "mydatabase",
+        "mode": "RWC"
+    },
+    {
+        "id": "970e8a9cf4ff08b9",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
